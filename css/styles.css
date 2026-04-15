@@ -1,0 +1,415 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,400i,700");
+
+* {
+  margin: 0;
+  padding: 0;
+  text-wrap: nowrap;
+  box-sizing: border-box;
+  font-family: Montserrat, sans-serif;
+}
+
+html {
+  background: lightcyan
+    url('data:image/svg+xml,%3Csvg width="64" height="64" fill="red" fill-opacity="0.4" fill-rule="evenodd" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M8 16c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm0-2c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6zm33.414-6l5.95-5.95L45.95.636 40 6.586 34.05.636 32.636 2.05 38.586 8l-5.95 5.95 1.414 1.414L40 9.414l5.95 5.95 1.414-1.414L41.414 8zM40 48c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm0-2c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6zM9.414 40l5.95-5.95-1.414-1.414L8 38.586l-5.95-5.95L.636 34.05 6.586 40l-5.95 5.95 1.414 1.414L8 41.414l5.95 5.95 1.414-1.414L9.414 40z"/%3E%3C/svg%3E');
+}
+
+header {
+  grid-area: H;
+}
+.scoreContainer {
+  grid-area: S;
+}
+.gameContainer {
+  grid-area: G;
+}
+footer {
+  grid-area: F;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  display: grid;
+  font-size: 1.1em;
+  grid-template-rows: 80px 80px 1fr 60px;
+  grid-template-columns: 100%;
+  grid-template-areas:
+    "H"
+    "S"
+    "G"
+    "F";
+  transition: width 0.2s ease-out;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-shadow: 3px 3px black;
+  background: radial-gradient(circle, khaki 0%, darkkhaki 80%);
+}
+
+main {
+  height: 100%;
+}
+
+.scoreContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.gameContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: khaki;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid black;
+  background: khaki;
+}
+
+.player {
+  display: flex;
+  align-items: center;
+  padding: 5px 30px;
+  height: 50%;
+  flex-direction: row;
+  justify-content: left;
+}
+
+.player1 {
+  background: coral;
+}
+
+.player2 {
+  background: skyblue;
+}
+
+#btnRename1,
+#btnRename2 {
+  margin-left: 10px;
+  margin-right: auto;
+  flex-shrink: 0;
+  /*   viewBox: 0 0 576 512; */
+  font-size: 20px;
+}
+
+.score {
+  margin-left: 50px;
+}
+
+.game {
+  display: flex;
+  justify-content: center;
+}
+
+table {
+  width: 240px;
+  height: 240px;
+  padding: 30px;
+  table-layout: fixed;
+  transition:
+    padding 0.2s ease-out,
+    width 0.2s ease-out,
+    height 0.2s ease-out;
+}
+
+td {
+  width: 80px;
+  height: 80px;
+  text-align: center;
+  transition:
+    width 0.2s ease-out,
+    height 0.2s ease-out;
+}
+
+@media (width > 0px) {
+  td#cell1 {
+    border-right: 2px solid black;
+    border-bottom: 2px solid black;
+  }
+
+  td#cell2 {
+    border-bottom: 2px solid black;
+  }
+
+  td#cell3 {
+    border-bottom: 2px solid black;
+    border-left: 2px solid black;
+  }
+
+  td#cell4 {
+    border-right: 2px solid black;
+  }
+
+  td#cell6 {
+    border-left: 2px solid black;
+  }
+
+  td#cell7 {
+    border-top: 2px solid black;
+    border-right: 2px solid black;
+  }
+
+  td#cell8 {
+    border-top: 2px solid black;
+  }
+
+  td#cell9 {
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+  }
+}
+
+i {
+  transition: opacity 0.1s linear;
+  animation: zoomIn 0.1s linear;
+}
+
+.fa-solid {
+  font-size: 60px;
+}
+
+.fa-x {
+  color: coral;
+}
+
+.fa-o {
+  color: skyblue;
+}
+
+.allMark i {
+  animation: none;
+  opacity: 0.5;
+}
+
+.wonMark i {
+  animation: triBlink 0.9s;
+  opacity: 1;
+}
+
+#btnReset {
+  width: 100px;
+  height: 30px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  color: white;
+  background: lightcoral;
+  font-size: 0.9em;
+  border-radius: 10px;
+  box-shadow: 3px 3px black;
+  transition:
+    width 0.2s ease-out,
+    height 0.2s ease-out;
+}
+
+#btnReset:hover {
+  background: lightblue;
+  color: black;
+}
+
+#btnReset:active {
+  transform: translate(3px, 3px);
+  box-shadow: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+@media (orientation: landscape) and (width < 766px) and (height < 400px) {
+  /*  small phones landscape  */
+  body {
+    grid-template-rows: 80px 1fr 1fr;
+    grid-template-columns: 50% 50%;
+    grid-template-areas:
+      "H G"
+      "S G"
+      "F G";
+  }
+
+  .scoreContainer {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .player {
+    width: 100%;
+    height: 50%;
+  }
+
+  table {
+    width: 180px;
+    height: 180px;
+    padding: 10px;
+  }
+
+  td {
+    width: 60px;
+    height: 60px;
+  }
+
+  .fa-solid {
+    font-size: 40px;
+  }
+
+  #btnReset {
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+}
+
+@media (width > 575px) and (height >= 400px) {
+  /*  large phones and tablets portrait  */
+  body {
+    grid-template-rows: 80px 60px 1fr 60px;
+    grid-template-columns: 100%;
+    grid-template-areas:
+      "H"
+      "S"
+      "G"
+      "F";
+  }
+
+  .scoreContainer {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .player {
+    width: 50%;
+    height: 100%;
+  }
+
+  .player2 {
+    flex-direction: row-reverse;
+    justify-content: right;
+  }
+
+  #btnRename1 {
+    margin-left: 10px;
+    margin-right: auto;
+  }
+  #btnRename2 {
+    margin-right: 10px;
+    margin-left: auto;
+  }
+
+  .score {
+    margin: 0;
+  }
+
+  table {
+    width: 270px;
+    height: 270px;
+    padding: 30px;
+  }
+
+  td {
+    width: 90px;
+    height: 90px;
+  }
+
+  .fa-solid {
+    font-size: 70px;
+  }
+
+  #btnReset {
+    width: 120px;
+    height: 40px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+  }
+}
+
+@media (width > 765px) {
+  /*  tablet landscape  */
+  body {
+    grid-template-rows: 80px 60px 1fr 60px;
+    grid-template-columns: 100%;
+    grid-template-areas:
+      "H"
+      "S"
+      "G"
+      "F";
+    width: 600px;
+    margin: 0 auto;
+  }
+
+  .scoreContainer {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .player {
+    width: 50%;
+    height: 100%;
+  }
+
+  .player2 {
+    flex-direction: row-reverse;
+    justify-content: right;
+  }
+
+  #btnRename1 {
+    margin-left: 10px;
+    margin-right: auto;
+  }
+  #btnRename2 {
+    margin-right: 10px;
+    margin-left: auto;
+  }
+
+  .score {
+    margin: 0;
+  }
+}
+
+@media (width > 1000px) {
+  /*  desktop/daptops  */
+  body {
+    width: 800px;
+  }
+}
+
+@media (width > 1200px) {
+  /*  larger desktop/laptops  */
+  body {
+    width: 1000px;
+  }
+}
+
+@keyframes zoomIn {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes triBlink {
+  0%,
+  33.33%,
+  66.66%,
+  100% {
+    opacity: 1;
+  }
+  16.5%,
+  50%,
+  82.5% {
+    opacity: 0;
+  }
+}
