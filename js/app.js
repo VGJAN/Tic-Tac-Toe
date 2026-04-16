@@ -105,9 +105,19 @@ document.addEventListener("DOMContentLoaded", function () {
   function renamePlayer() {
     var index = Number(this.id.slice(-1)) - 1;
     var name;
-    do {
+
+    while (true) {
       name = prompt("Player " + (index + 1) + " name (letters only):");
-    } while (!/^[A-Za-z ]{1,12}$/.test(name));
+
+      if (name === null) {
+        return;
+      }
+
+      if (/^[A-Za-z ]{1,12}$/.test(name)) {
+        break;
+      }
+    }
+
     playerNames[index].innerHTML = name;
   }
 
