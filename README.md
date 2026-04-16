@@ -1,64 +1,61 @@
-# Tic-Tac-Toe
-A browser-based Tic-Tac-Toe game built with HTML, CSS, and JavaScript, featuring interactive gameplay, score tracking, and responsive design.
+# 🎮 Tic-Tac-Toe Game
 
-Live Demo:
+A responsive browser-based Tic-Tac-Toe game built using **HTML, CSS, and vanilla JavaScript**.  
+This project focuses on clean UI design, efficient game logic, and structured code.
+
+🔗 **Live Demo:**  
 https://vgjan.github.io/Tic-Tac-Toe/
 
 ---
 
-## Features
+## ✨ Features
 
-- Two-player game (X and O)
+- Two-player gameplay (X vs O)
+- Dynamic turn switching between rounds
 - Win detection (rows, columns, diagonals)
+- Draw detection using move tracking
 - Score tracking system
-- Reset game button
 - Editable player names
-- Responsive design for mobile and desktop
-- Visual highlight for winning moves
+- Visual highlight for winning combination
+- Responsive design for mobile, tablet, and desktop
+- Smooth animations and UI feedback
 
 ---
 
-## Technologies Used
+## 🛠️ Technologies Used
 
 - HTML5
-- CSS3
-- JavaScript (Vanilla)
-- Font Awesome icons
+- CSS3 (Flexbox, Grid, Media Queries)
+- JavaScript (ES6+)
+- Font Awesome (icons)
 
 ---
 
-## How to Play
+## 🎮 How to Play
 
-- Player X starts first
-- Players take turns placing marks on the grid
-- First to align 3 marks wins
-- Score updates automatically
-- Use Reset button to restart the game
-
----
-
-## Project Structure
-
-tic-tac-toe/
-├── index.html
-├── css/
-│   └── styles.css
-├── js/
-│   └── app.js
+1. Player X and Player O take turns
+2. Click on an empty cell to place your mark
+3. First player to align 3 marks wins the round
+4. Scores update automatically
+5. Starting player alternates each round
+6. Use the **Reset** button to start a new round
 
 ---
 
-## Future Improvements
+## 🧠 Key Concepts Implemented
 
-- Add AI opponent
-- Add sound effects
-- Add localStorage for score saving
-- Add dark mode
-- Online multiplayer support
+- DOM manipulation
+- Event handling
+- Game state management
+- Win condition algorithms
+- Responsive UI design
+- Code refactoring and optimisation
 
 ---
 
-## Author
+## 👨‍💻 Author
 
-Gowsaljan
+**Gowsaljan Vimalaratnam**  
 GitHub: https://github.com/vgjan
+
+---
