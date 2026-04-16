@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
       cells.push(cell);
     }
   }
+
   // ---------------- WIN CHECK ----------------
   function winCheck() {
     for (var i = 0; i < winConditions.length; i++) {
@@ -75,19 +76,19 @@ document.addEventListener("DOMContentLoaded", function () {
       this.classList.remove("empty");
       this.classList.add(activePlayer);
       this.innerHTML = `<i class="fa-solid fa-${activePlayer.toLowerCase()}"></i>`;
-      gameStatus.innerHTML = "Running";
 
       var winCondition = winCheck();
 
       if (winCondition) {
         endGame(winCondition);
-      }
-
-      if (!winCondition && document.querySelectorAll(".empty").length == 0) {
+      } else if (document.querySelectorAll(".empty").length == 0) {
         gameStatus.innerHTML = "Draw";
+      } else {
+        gameStatus.innerHTML =
+          playerNames[activePlayer === "X" ? 1 : 0].innerHTML + "'s turn";
       }
 
-      activePlayer = activePlayer === "X" ? "O" : (activePlayer = "X");
+      activePlayer = activePlayer === "X" ? "O" : "X";
     }
   }
 
@@ -98,7 +99,9 @@ document.addEventListener("DOMContentLoaded", function () {
       cell.className = "empty";
       cell.onclick = gameLogic;
     });
-    gameStatus.innerHTML = "Not Running";
+
+    gameStatus.innerHTML =
+      playerNames[activePlayer === "X" ? 0 : 1].innerHTML + "'s turn";
   }
 
   // ---------------- RENAME PLAYER ----------------
