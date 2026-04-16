@@ -1,7 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
   // ---------------- GLOBAL VARIABLES ----------------
-  var activePlayer = "X";
-  var winConditions = [
+  let startingPlayer = "O";
+  let activePlayer = "X";
+  let moveCount = 0;
+  const winConditions = [
     ["00", "01", "02"],
     ["10", "11", "12"],
     ["20", "21", "22"],
@@ -11,40 +13,41 @@ document.addEventListener("DOMContentLoaded", function () {
     ["00", "11", "22"],
     ["02", "11", "20"],
   ];
-  var gameStatus = document.getElementById("gameStatus");
-  var playerNames = document.querySelectorAll(".playerName");
-  var playerScores = [
+  const gameStatus = document.getElementById("gameStatus");
+  const playerNames = document.querySelectorAll(".playerName");
+  const playerScores = [
     document.getElementById("player1Score"),
     document.getElementById("player2Score"),
   ];
 
   // ---------------- SETUP GRID ----------------
-  var table = document.createElement("table");
+  const table = document.createElement("table");
   table.setAttribute("border", "0");
   table.setAttribute("cellspacing", "0");
   document.querySelector(".game").appendChild(table);
 
-  var cells = [];
+  const cells = [];
 
-  for (var i = 0; i < 3; i++) {
-    var row = table.insertRow();
-    for (var j = 0; j < 3; j++) {
-      var cell = row.insertCell();
+  for (let i = 0; i < 3; i++) {
+    const row = table.insertRow();
+    for (let j = 0; j < 3; j++) {
+      const cell = row.insertCell();
       cell.id = "cell" + (cells.length + 1);
       cells.push(cell);
     }
   }
 
   // ---------------- WIN CHECK ----------------
-  function winCheck() {
-    for (var i = 0; i < winConditions.length; i++) {
-      var tempCombo = "";
-      for (var j = 0; j < 3; j++) {
-        var [r, c] = winConditions[i][j];
-        tempCombo += table.rows[r].cells[c].className;
-      }
+  function checkWin() {
+    for (let i = 0; i < winConditions.length; i++) {
+      const values = [];
 
-      var [a, b, c] = tempCombo;
+      winConditions[i].forEach(([r, c]) => {
+        if (table.rows[r].cells[c].classList.contains("empty")) return;
+        values.push(table.rows[r].cells[c].className);
+      });
+
+      const [a, b, c] = values;
       if (a && a === b && b === c) {
         return winConditions[i];
       }
@@ -62,33 +65,43 @@ document.addEventListener("DOMContentLoaded", function () {
       table.rows[r].cells[c].classList.add("wonCell");
     });
 
-    var index = activePlayer === "X" ? 0 : 1;
+    const index = activePlayer === "X" ? 0 : 1;
 
     playerScores[index].innerHTML = Number(playerScores[index].innerHTML) + 1;
-    gameStatus.innerHTML = playerNames[index].innerHTML + " won this round";
   }
 
   // ---------------- GAME LOGIC ----------------
   function gameLogic() {
     if (!this.classList.contains("empty")) return;
 
-    if (this.className == "empty") {
-      this.classList.remove("empty");
-      this.classList.add(activePlayer);
-      this.innerHTML = `<i class="fa-solid fa-${activePlayer.toLowerCase()}"></i>`;
+    this.classList.remove("empty");
+    this.classList.add(activePlayer);
+    this.innerHTML = `<i class="fa-solid fa-${activePlayer.toLowerCase()}"></i>`;
 
-      var winCondition = winCheck();
+    const winCondition = checkWin();
+    moveCount++;
 
-      if (winCondition) {
-        endGame(winCondition);
-      } else if (document.querySelectorAll(".empty").length == 0) {
-        gameStatus.innerHTML = "Draw";
-      } else {
-        gameStatus.innerHTML =
-          playerNames[activePlayer === "X" ? 1 : 0].innerHTML + "'s turn";
-      }
-
+    if (winCondition) {
+      endGame(winCondition);
+      updateGameStatus("win");
+    } else if (moveCount == 9) {
+      updateGameStatus("draw");
+    } else {
       activePlayer = activePlayer === "X" ? "O" : "X";
+      updateGameStatus();
+    }
+  }
+
+  // ---------------- GAME STATUS ----------------
+  function updateGameStatus(cause) {
+    const index = activePlayer === "X" ? 0 : 1;
+
+    if (cause === "win") {
+      gameStatus.innerHTML = playerNames[index].innerHTML + " won";
+    } else if (cause === "draw") {
+      gameStatus.innerHTML = "Draw";
+    } else {
+      gameStatus.innerHTML = playerNames[index].innerHTML + "'s turn";
     }
   }
 
@@ -100,25 +113,22 @@ document.addEventListener("DOMContentLoaded", function () {
       cell.onclick = gameLogic;
     });
 
+    startingPlayer = startingPlayer === "X" ? "O" : "X";
+    activePlayer = startingPlayer;
+    moveCount = 0;
     gameStatus.innerHTML =
       playerNames[activePlayer === "X" ? 0 : 1].innerHTML + "'s turn";
   }
 
   // ---------------- RENAME PLAYER ----------------
   function renamePlayer() {
-    var index = Number(this.id.slice(-1)) - 1;
-    var name;
+    const index = Number(this.id.slice(-1)) - 1;
+    let name;
 
     while (true) {
       name = prompt("Player " + (index + 1) + " name (letters only):");
-
-      if (name === null) {
-        return;
-      }
-
-      if (/^[A-Za-z ]{1,12}$/.test(name)) {
-        break;
-      }
+      if (name === null) return;
+      if (/^[A-Za-z ]{1,12}$/.test(name)) break;
     }
 
     playerNames[index].innerHTML = name;

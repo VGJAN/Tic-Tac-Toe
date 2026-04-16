@@ -233,6 +233,10 @@ i {
   box-shadow: none;
 }
 
+#gameStatus {
+  font-weight: bold;
+}
+
 ::-webkit-scrollbar {
   display: none;
 }
