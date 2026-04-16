@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Global variable
-  var currentPlayer = "X";
-  var possibleWin = [
+  // ---------------- GLOBAL VARIABLES ----------------
+  var activePlayer = "X";
+  var winConditions = [
     ["00", "01", "02"],
     ["10", "11", "12"],
     ["20", "21", "22"],
@@ -11,114 +11,110 @@ document.addEventListener("DOMContentLoaded", function () {
     ["00", "11", "22"],
     ["02", "11", "20"],
   ];
+  var gameStatus = document.getElementById("gameStatus");
+  var playerNames = document.querySelectorAll(".playerName");
+  var playerScores = [
+    document.getElementById("player1Score"),
+    document.getElementById("player2Score"),
+  ];
 
-  function gameLogic() {
-    if (this.className == "empty") {
-      this.className = currentPlayer;
-      this.style.cursor = "default";
-
-      if (currentPlayer == "X") {
-        this.innerHTML = '<i class="fa-solid fa-x"></i>';
-      } else {
-        this.innerHTML = '<i class="fa-solid fa-o"></i>';
-      }
-
-      document.getElementById("gameStatus").innerHTML = "Running";
-
-      var winCheckReturn = winCheck();
-
-      if (winCheckReturn != undefined) {
-        for (var i = 0; i < 9; i++) {
-          document.getElementsByTagName("td")[i].style += "cursor: default; pointer-events: none;";
-          document.getElementsByTagName("td")[i].onclick = "";
-          if (document.getElementsByTagName("td")[i].className != "empty") {
-            document.getElementsByTagName("td")[i].className += " allMark";
-          }
-        }
-
-        for (var cellCoordinate = 0; cellCoordinate < 3; cellCoordinate++) {
-          var row = winCheckReturn[cellCoordinate][0];
-          var cell = winCheckReturn[cellCoordinate][1];
-          table.rows[row].cells[cell].className += " wonMark";
-        }
-
-        var player1Score = document.getElementById("player1Score");
-        var player2Score = document.getElementById("player2Score");
-
-        if (currentPlayer == "X") {
-          player1Score.innerHTML = Number(player1Score.innerHTML) + 1;
-          document.getElementById("gameStatus").innerHTML = document.getElementsByClassName("playerName")[0].innerHTML + " won this round";
-        } else {
-          player2Score.innerHTML = Number(player2Score.innerHTML) + 1;
-          document.getElementById("gameStatus").innerHTML = document.getElementsByClassName("playerName")[1].innerHTML + " won this round";
-        }
-      }
-
-      if (winCheckReturn == undefined && document.getElementsByClassName("empty").length == 0) {
-        document.getElementById("gameStatus").innerHTML = "Draw";
-      }
-
-      currentPlayer = currentPlayer == "X" ? "O" : "X";
-    }
-  }
-
-  function winCheck() {
-    for (var indexOfPossibleWin = 0; indexOfPossibleWin < possibleWin.length; indexOfPossibleWin++) {
-      var tempCombination = "";
-
-      for (var cellCoordinate = 0; cellCoordinate < 3; cellCoordinate++) {
-        var row = possibleWin[indexOfPossibleWin][cellCoordinate][0];
-        var cell = possibleWin[indexOfPossibleWin][cellCoordinate][1];
-        tempCombination += table.rows[row].cells[cell].className;
-      }
-
-      if (tempCombination[0] != null && tempCombination[0] == tempCombination[1] && tempCombination[1] == tempCombination[2]) {
-        return possibleWin[indexOfPossibleWin];
-      }
-    }
-  }
-
-  function newGame() {
-    for (var i = 1; i <= 9; i++) {
-      var cell = document.getElementById("cell" + i);
-      cell.innerHTML = "";
-      cell.className = "empty";
-      cell.onclick = gameLogic;
-      cell.style += "cursor: pointer; opacity: 1;";
-    }
-    document.getElementById("gameStatus").innerHTML = "Not Running";
-  }
-
-  function renamePlayerName() {
-    do {
-      var playerName = document.getElementsByClassName("playerName")[this.id[9] - 1];
-      playerName.innerHTML = prompt("Set a name for Player " + this.id[9] + ":",);
-    } while (playerName.innerHTML.length > 12 || playerName.innerHTML.length < 1 || /^[A-Za-z ]+$/.test(playerName.innerHTML) == false);
-  }
-
-  // Build cells
+  // ---------------- SETUP GRID ----------------
   var table = document.createElement("table");
   table.setAttribute("border", "0");
   table.setAttribute("cellspacing", "0");
-  document.getElementsByClassName("game")[0].appendChild(table);
+  document.querySelector(".game").appendChild(table);
 
-  var cellNo = 1;
-  for (var i = 1; i <= 3; i++) {
-    var row = document.createElement("tr");
-    table.appendChild(row);
+  var cells = [];
 
-    for (var j = 1; j <= 3; j++) {
-      var cell = document.createElement("td");
-      cell.id = "cell" + cellNo;
-      row.appendChild(cell);
-      cellNo++;
+  for (var i = 0; i < 3; i++) {
+    var row = table.insertRow();
+    for (var j = 0; j < 3; j++) {
+      var cell = row.insertCell();
+      cell.id = "cell" + (cells.length + 1);
+      cells.push(cell);
+    }
+  }
+  // ---------------- WIN CHECK ----------------
+  function winCheck() {
+    for (var i = 0; i < winConditions.length; i++) {
+      var tempCombo = "";
+      for (var j = 0; j < 3; j++) {
+        var [r, c] = winConditions[i][j];
+        tempCombo += table.rows[r].cells[c].className;
+      }
+
+      var [a, b, c] = tempCombo;
+      if (a && a === b && b === c) {
+        return winConditions[i];
+      }
     }
   }
 
-  // Assign button functions
+  // ---------------- END GAME ----------------
+  function endGame(win) {
+    cells.forEach((cell) => {
+      cell.onclick = null;
+      cell.className += " endGameCell";
+    });
+
+    win.forEach(([r, c]) => {
+      table.rows[r].cells[c].classList.add("wonCell");
+    });
+
+    var index = activePlayer === "X" ? 0 : 1;
+
+    playerScores[index].innerHTML = Number(playerScores[index].innerHTML) + 1;
+    gameStatus.innerHTML = playerNames[index].innerHTML + " won this round";
+  }
+
+  // ---------------- GAME LOGIC ----------------
+  function gameLogic() {
+    if (!this.classList.contains("empty")) return;
+
+    if (this.className == "empty") {
+      this.classList.remove("empty");
+      this.classList.add(activePlayer);
+      this.innerHTML = `<i class="fa-solid fa-${activePlayer.toLowerCase()}"></i>`;
+      gameStatus.innerHTML = "Running";
+
+      var winCondition = winCheck();
+
+      if (winCondition) {
+        endGame(winCondition);
+      }
+
+      if (!winCondition && document.querySelectorAll(".empty").length == 0) {
+        gameStatus.innerHTML = "Draw";
+      }
+
+      activePlayer = activePlayer === "X" ? "O" : (activePlayer = "X");
+    }
+  }
+
+  // ---------------- NEW GAME ----------------
+  function newGame() {
+    cells.forEach((cell) => {
+      cell.innerHTML = "";
+      cell.className = "empty";
+      cell.onclick = gameLogic;
+    });
+    gameStatus.innerHTML = "Not Running";
+  }
+
+  // ---------------- RENAME PLAYER ----------------
+  function renamePlayer() {
+    var index = Number(this.id.slice(-1)) - 1;
+    var name;
+    do {
+      name = prompt("Player " + (index + 1) + " name (letters only):");
+    } while (!/^[A-Za-z ]{1,12}$/.test(name));
+    playerNames[index].innerHTML = name;
+  }
+
+  // ---------------- BUTTONS ----------------
   document.getElementById("btnReset").onclick = newGame;
-  document.getElementById("btnRename1").onclick = renamePlayerName;
-  document.getElementById("btnRename2").onclick = renamePlayerName;
+  document.getElementById("btnRename1").onclick = renamePlayer;
+  document.getElementById("btnRename2").onclick = renamePlayer;
 
   newGame();
 });

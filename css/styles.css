@@ -131,6 +131,8 @@ td {
   transition:
     width 0.2s ease-out,
     height 0.2s ease-out;
+  cursor: default;
+  pointer-events: auto;
 }
 
 @media (width > 0px) {
@@ -188,12 +190,20 @@ i {
   color: skyblue;
 }
 
-.allMark i {
+.empty {
+  cursor: pointer;
+}
+
+.endGameCell {
+  pointer-events: none;
+}
+
+.endGameCell i {
   animation: none;
   opacity: 0.5;
 }
 
-.wonMark i {
+.wonCell i {
   animation: triBlink 0.9s;
   opacity: 1;
 }
