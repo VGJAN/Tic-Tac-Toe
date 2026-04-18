@@ -4,7 +4,7 @@ A responsive browser-based Tic-Tac-Toe game built using **HTML, CSS, and vanilla
 This project focuses on clean UI design, efficient game logic, and structured code.
 
 🔗 **Live Demo:**  
-https://vgjan.github.io/Tic-Tac-Toe/
+https://vgjan.github.io/tic-tac-toe/
 
 ---
 
